@@ -21,5 +21,8 @@ class MainActivity : AppCompatActivity() {
         binding.btnLeftDrawer.setOnClickListener {
             startActivity(Intent(this, LeftDrawerActivity::class.java))
         }
+        binding.btnTopDrawer.setOnClickListener {
+            startActivity(Intent(this, TopDrawerActivity::class.java))
+        }
     }
 }

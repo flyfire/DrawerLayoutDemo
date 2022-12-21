@@ -9,17 +9,28 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="VDHLayout"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btn_left_drawer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
     <Button
         android:id="@+id/btn_left_drawer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="LeftDrawerLayout"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btn_top_drawer"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_vdh"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_vdh" />
+
+    <Button
+        android:id="@+id/btn_top_drawer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TopDrawerLayout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_left_drawer" />
 </androidx.constraintlayout.widget.ConstraintLayout>
