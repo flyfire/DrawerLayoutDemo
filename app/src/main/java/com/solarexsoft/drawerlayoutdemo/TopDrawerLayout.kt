@@ -39,15 +39,24 @@ class TopDrawerLayout @JvmOverloads constructor(
 
         dragger = ViewDragHelper.create(this, 1.0f, object : ViewDragHelper.Callback() {
             override fun tryCaptureView(child: View, pointerId: Int): Boolean {
+                Log.d(TAG, "tryCaptureView() called with: child = $child, pointerId = $pointerId")
                 return child == topMenuView
             }
 
             override fun clampViewPositionVertical(child: View, top: Int, dy: Int): Int {
                 val newTop = max(-child.height, min(top, 0))
+                Log.d(
+                    TAG,
+                    "clampViewPositionVertical() called with: child = $child, top = $top, dy = $dy, childHeight = ${child.height}, newTop = $newTop"
+                )
                 return newTop
             }
 
             override fun onEdgeDragStarted(edgeFlags: Int, pointerId: Int) {
+                Log.d(
+                    TAG,
+                    "onEdgeDragStarted() called with: edgeFlags = $edgeFlags, pointerId = $pointerId"
+                )
                 dragger.captureChildView(topMenuView, pointerId)
             }
 
@@ -78,11 +87,16 @@ class TopDrawerLayout @JvmOverloads constructor(
                 val childHeight = changedView.height
                 val offset = (childHeight + top).toFloat()
                 topMenuOnScreen = offset
+                Log.d(
+                    TAG,
+                    "onViewPositionChanged() childHeight = ${childHeight}, offset = ${offset}"
+                )
                 changedView.visibility = if (offset == 0.0f) View.INVISIBLE else View.VISIBLE
                 invalidate()
             }
 
             override fun getViewVerticalDragRange(child: View): Int {
+                Log.d(TAG, "getViewVerticalDragRange() called with: child = $child")
                 return if (topMenuView == child) child.height else 0
             }
         } )
