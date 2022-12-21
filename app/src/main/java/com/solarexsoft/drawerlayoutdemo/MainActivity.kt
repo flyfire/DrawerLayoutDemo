@@ -18,5 +18,8 @@ class MainActivity : AppCompatActivity() {
         binding.btnVdh.setOnClickListener {
             startActivity(Intent(this, VDHActivity::class.java))
         }
+        binding.btnLeftDrawer.setOnClickListener {
+            startActivity(Intent(this, LeftDrawerActivity::class.java))
+        }
     }
 }

@@ -2,6 +2,7 @@ package com.solarexsoft.drawerlayoutdemo
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.customview.widget.ViewDragHelper
@@ -65,7 +66,7 @@ class LeftDrawerLayout @JvmOverloads constructor(
                 val childWidth = changedView.width
                 val offset = (childWidth + left).toFloat()/childWidth
                 leftMenuOnScreen = offset
-                changedView.visibility = if (offset == 0) View.INVISIBLE else View.VISIBLE
+                changedView.visibility = if (offset == 0.0f) View.INVISIBLE else View.VISIBLE
                 invalidate()
             }
 
@@ -77,8 +78,88 @@ class LeftDrawerLayout @JvmOverloads constructor(
         dragger.minVelocity = minVel
     }
 
-    override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        val widthSize = MeasureSpec.getSize(widthMeasureSpec)
+        val heightSize = MeasureSpec.getSize(heightMeasureSpec)
 
+        setMeasuredDimension(widthSize, heightSize)
+
+        leftMenuView = getChildAt(1)
+        val lp = leftMenuView.layoutParams as MarginLayoutParams
+        val drawerWidthSpec = getChildMeasureSpec(
+            widthMeasureSpec,
+            minDrawerMargin + lp.leftMargin + lp.rightMargin,
+            lp.width
+        )
+        val drawerHeightSpec = getChildMeasureSpec(
+            heightMeasureSpec,
+            lp.topMargin + lp.bottomMargin,
+            lp.height
+        )
+        leftMenuView.measure(drawerWidthSpec, drawerHeightSpec)
+
+        contentView = getChildAt(0)
+        val contentLp = contentView.layoutParams as MarginLayoutParams
+        val contentWidthSpec = MeasureSpec.makeMeasureSpec(
+            widthSize - contentLp.topMargin - contentLp.bottomMargin,
+            MeasureSpec.EXACTLY
+        )
+        val contentHeightSpec = MeasureSpec.makeMeasureSpec(
+            heightSize - contentLp.topMargin - contentLp.bottomMargin,
+            MeasureSpec.EXACTLY
+        )
+        contentView.measure(contentWidthSpec, contentHeightSpec)
     }
 
+    override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
+        val contentLp = contentView.layoutParams as MarginLayoutParams
+        contentView.layout(
+            contentLp.leftMargin,
+            contentLp.topMargin,
+            contentLp.leftMargin + contentView.measuredWidth,
+            contentLp.topMargin + contentView.measuredHeight
+        )
+        val menuLp = leftMenuView.layoutParams as MarginLayoutParams
+        val menuWidth = leftMenuView.measuredWidth
+        val childLeft = -menuWidth + (menuWidth * leftMenuOnScreen).toInt()
+        leftMenuView.layout(
+            childLeft,
+            menuLp.topMargin,
+            childLeft + menuWidth,
+            menuLp.topMargin + leftMenuView.measuredHeight
+        )
+    }
+
+    override fun onInterceptTouchEvent(ev: MotionEvent): Boolean {
+        val shouldInterceptTouchEvent = dragger.shouldInterceptTouchEvent(ev)
+        return shouldInterceptTouchEvent
+    }
+
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        dragger.processTouchEvent(event)
+        return true
+    }
+
+    override fun computeScroll() {
+        if (dragger.continueSettling(true)) {
+            invalidate()
+        }
+    }
+
+    fun closeDrawer() {
+        leftMenuOnScreen = 0.0f
+        dragger.smoothSlideViewTo(leftMenuView, -leftMenuView.width, leftMenuView.top)
+    }
+
+    override fun generateDefaultLayoutParams(): MarginLayoutParams {
+        return MarginLayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+    }
+
+    override fun generateLayoutParams(attrs: AttributeSet): LayoutParams {
+        return MarginLayoutParams(context, attrs)
+    }
+
+    override fun generateLayoutParams(p: LayoutParams): LayoutParams {
+        return MarginLayoutParams(p)
+    }
 }

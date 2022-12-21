@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.solarexsoft.drawerlayoutdemo.LeftDrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/left_drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#44ff0000">
+        <TextView
+            android:id="@+id/tv_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="hello world"
+            android:textSize="40sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/menu_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/design_default_color_primary">
+        <TextView
+            android:id="@+id/tv_item0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="item 0"
+            android:textSize="40sp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="60dp"/>
+        <TextView
+            android:id="@+id/tv_item1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="item 1"
+            android:textSize="40sp"
+            app:layout_constraintTop_toBottomOf="@+id/tv_item0"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="12dp"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.solarexsoft.drawerlayoutdemo.LeftDrawerLayout>

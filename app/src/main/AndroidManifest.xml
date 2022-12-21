@@ -28,6 +28,7 @@
                 android:value="" />
         </activity>
         <activity android:name=".VDHActivity"/>
+        <activity android:name=".LeftDrawerActivity"/>
     </application>
 
 </manifest>
